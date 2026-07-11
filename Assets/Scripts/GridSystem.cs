@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridSystem : MonoBehaviour
@@ -8,11 +7,12 @@ public class GridSystem : MonoBehaviour
 
     private GameObject[,] gridSpaceArray;
     [SerializeField] private GameObject gridSpace;
+    private GameObject startSpace, finishSpace;
 
     private void Awake()
     {
-        columnRange = Random.Range(6, 11);
-        rowRange = Random.Range(5, 9);
+        columnRange = Random.Range(7, 11);
+        rowRange = Random.Range(7, 11);
 
         StartGrid();
     }
@@ -35,16 +35,46 @@ public class GridSystem : MonoBehaviour
                 if (y == rowRange - 1 && x == 0)
                 {
                     newGridSpace.GetComponent<GridSpace>().SetAsStart();
+                    newGridSpace.GetComponent<Renderer>().material.color = Color.red;
+                    startSpace = newGridSpace;
                 }
                 if (x == columnRange - 1 && y == 0)
                 {
                     newGridSpace.GetComponent<GridSpace>().SetAsFinish();
+                    newGridSpace.GetComponent<Renderer>().material.color = Color.cyan;
+                    finishSpace = newGridSpace;
                 }
 
+
+                newGridSpace.GetComponent<GridSpace>().SetCoordinates(x, y);
                 gridSpaceArray[x, y] = newGridSpace;
 
             }
         }
+    }
+
+
+    public GameObject GetStartSpace()
+    {
+        return startSpace;
+    }
+
+    public bool CheckSpace(int column, int row)
+    {
+        if (column >= columnRange || row >= rowRange || column < 0 || row < 0)
+        {
+            return false;
+        }
+        if (gridSpaceArray[column, row].GetComponent<GridSpace>().CheckIsObstacle())
+        {
+            return false;
+        }
+        return true;
+
+    }
+    public GameObject GetSpace(int column, int row)
+    {
+        return gridSpaceArray[column, row];
     }
 
 }
