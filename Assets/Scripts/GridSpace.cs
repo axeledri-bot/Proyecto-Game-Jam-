@@ -8,6 +8,7 @@ public class GridSpace : MonoBehaviour
     private string[] rowLetter = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
     [SerializeField] private GameObject explosionSfx, targetMark;
+    [SerializeField] private GameObject[] obstacleArray;
 
     public void SetCoordinates(int x, int y)
     {
@@ -32,6 +33,15 @@ public class GridSpace : MonoBehaviour
     public bool CheckIsObstacle()
     {
         return isObstacle;
+    }
+    public void ChangeObstacleStatus()
+    {
+        isObstacle = !isObstacle;
+        if (isObstacle)
+        {
+            int i = Random.Range(0, obstacleArray.Length);
+            obstacleArray[i].SetActive(true);
+        }
     }
     public bool CheckIsTarget()
     {

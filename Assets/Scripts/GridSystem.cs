@@ -9,23 +9,30 @@ public class GridSystem : MonoBehaviour
     private GameObject startSpace, finishSpace;
 
     // GRID BOMBING VARIABLES
-    [SerializeField] private int maxBombs = 3;
+    [SerializeField] private int maxBombs = 4, maxObstacles = 2;
     private GameObject[] bombingSpaces;
+    private PlayerScript playerScript;
 
     private void Awake()
     {
         columnRange = Random.Range(4, 8);
         rowRange = Random.Range(4, 8);
         StartGrid();
+        //PlaceObstacles();
 
         bombingSpaces = new GameObject[maxBombs];
+    }
+
+    private void Start()
+    {
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SelectAllRandomSpace();
+            SelectFullLockSpace();
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
@@ -72,6 +79,32 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    public void PlaceObstacles()
+    {
+        int startX, startY, finishX, finishY, randomX, randomY;
+        startSpace.GetComponent<GridSpace>().GetCoordinates(out startX, out startY);
+        finishSpace.GetComponent<GridSpace>().GetCoordinates(out finishX, out finishY);
+
+        for (int i=0; i < maxObstacles; i++)
+        {
+            while (true)
+            {
+                randomX = Random.Range(0, columnRange);
+                randomY = Random.Range(0, rowRange);
+                if (randomX == startX && randomY == startY || randomX == startX + 1 && randomY == startY || randomX == startX && randomY == startY - 1 ||
+                    randomX == finishX && randomY == finishY || randomX == finishX - 1 && randomY == finishY || randomX == finishX && randomY == finishY + 1 ||
+                    !GetSpace(randomX, randomY).GetComponent<GridSpace>().CheckIsObstacle())
+                {
+                }
+                else
+                {
+                    GetSpace(randomX, randomY).GetComponent<GridSpace>().ChangeObstacleStatus();
+                    break;
+                }
+            }
+        }
+        
+    }
 
     public GameObject GetStartSpace()
     {
@@ -98,7 +131,7 @@ public class GridSystem : MonoBehaviour
 
     public void SelectAllRandomSpace()
     {
-        for (int i = 0; i < maxBombs; i++)
+        for (int i = 0; i < maxBombs - 1; i++)
         {
             bombingSpaces[i] = GetSpace(Random.Range(0, columnRange), Random.Range(0, rowRange));
             if (!bombingSpaces[i].GetComponent<GridSpace>().CheckIsTarget())
@@ -115,11 +148,62 @@ public class GridSystem : MonoBehaviour
 
     public void SelectSemiRandomSpace()
     {
+        int playerX, playerY, checkX, checkY;
+        playerScript.GetPlayerCoordinates(out playerX, out playerY);
 
+        for (int i = 0; i < maxBombs - 1; i++)
+        {
+            checkX = Random.Range(playerX - 1, playerX + 2);
+            checkY = Random.Range(playerY - 1, playerY + 2);
+
+            if (CheckSpace(checkX, checkY))
+            {
+                bombingSpaces[i] = GetSpace(checkX, checkY);
+                if (!bombingSpaces[i].GetComponent<GridSpace>().CheckIsTarget())
+                {
+                    bombingSpaces[i].GetComponent<GridSpace>().SetTarget();
+                }
+                else
+                {
+                    bombingSpaces[i] = null;
+                    i--;
+                }
+            }
+            else
+            {
+                i--;
+            }
+        }
     }
 
-    public void selectFullLockSpace()
+    public void SelectFullLockSpace()
     {
+        int playerX, playerY, checkX, checkY;
+        playerScript.GetPlayerCoordinates(out playerX, out playerY);
 
+        for (int i = 0; i < maxBombs; i++)
+        {
+            checkX = Random.Range(playerX - 1, playerX + 2);
+            checkY = Random.Range(playerY - 1, playerY + 2);
+
+            if (CheckSpace(checkX, checkY))
+            {
+                bombingSpaces[i] = GetSpace(checkX, checkY);
+                if (!bombingSpaces[i].GetComponent<GridSpace>().CheckIsTarget())
+                {
+                    bombingSpaces[i].GetComponent<GridSpace>().SetTarget();
+                }
+                else
+                {
+                    bombingSpaces[i] = null;
+                    i--;
+                }
+            }
+            else
+            {
+                i--;
+            }
+        }
     }
+
 }
