@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GridSpace : MonoBehaviour
@@ -6,7 +7,7 @@ public class GridSpace : MonoBehaviour
     private int column, row;
     private string[] rowLetter = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
-
+    [SerializeField] private GameObject explosionSfx, targetMark;
 
     public void SetCoordinates(int x, int y)
     {
@@ -31,5 +32,26 @@ public class GridSpace : MonoBehaviour
     public bool CheckIsObstacle()
     {
         return isObstacle;
+    }
+    public bool CheckIsTarget()
+    {
+        return isTargeted;
+    }
+    public void SetTarget()
+    {
+        isTargeted = true;
+        targetMark.SetActive(true);
+    }
+    public void UnsetTarget()
+    {
+        isTargeted = false;
+    }
+    public void LooseBombs()
+    {
+        explosionSfx.SetActive(true);
+    }
+    public void ChangePlayerStatus()
+    {
+        isPlayerHere = !isPlayerHere;
     }
 }

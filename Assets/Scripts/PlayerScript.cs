@@ -8,6 +8,7 @@ public class PlayerScript : MonoBehaviour
     private GridSystem gridSystem;
 
     private int currentColumn, currentRow;
+    private GameObject currentGridSpace;
 
     private void Start()
     {
@@ -51,10 +52,16 @@ public class PlayerScript : MonoBehaviour
     }
 
 
-    private void MoveToSpace(GameObject startPos)
+    private void MoveToSpace(GameObject gridPos)
     {
-        transform.position = new Vector3(startPos.transform.position.x, transform.position.y, startPos.transform.position.z);
-        startPos.GetComponent<GridSpace>().GetCoordinates(out currentColumn, out currentRow);
+        if (currentGridSpace != null)
+        {
+            currentGridSpace.GetComponent<GridSpace>().ChangePlayerStatus();
+        }
+        currentGridSpace = gridPos;
+        transform.position = new Vector3(gridPos.transform.position.x, transform.position.y, gridPos.transform.position.z);
+        gridPos.GetComponent<GridSpace>().GetCoordinates(out currentColumn, out currentRow);
+        currentGridSpace.GetComponent<GridSpace>().ChangePlayerStatus();
     }
 
 }

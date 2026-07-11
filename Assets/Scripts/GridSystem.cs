@@ -2,19 +2,38 @@ using UnityEngine;
 
 public class GridSystem : MonoBehaviour
 {
-
+    // GRID CREATION VARIABLES
     private int columnRange, rowRange;
-
     private GameObject[,] gridSpaceArray;
     [SerializeField] private GameObject gridSpace;
     private GameObject startSpace, finishSpace;
 
+    // GRID BOMBING VARIABLES
+    [SerializeField] private int maxBombs = 3;
+    private GameObject[] bombingSpaces;
+
     private void Awake()
     {
-        columnRange = Random.Range(7, 11);
-        rowRange = Random.Range(7, 11);
-
+        columnRange = Random.Range(4, 8);
+        rowRange = Random.Range(4, 8);
         StartGrid();
+
+        bombingSpaces = new GameObject[maxBombs];
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SelectAllRandomSpace();
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            for (int i = 0; i < maxBombs; i++)
+            {
+                bombingSpaces[i].GetComponent<GridSpace>().LooseBombs();
+            }
+        }
     }
 
     public void StartGrid()
@@ -77,4 +96,30 @@ public class GridSystem : MonoBehaviour
         return gridSpaceArray[column, row];
     }
 
+    public void SelectAllRandomSpace()
+    {
+        for (int i = 0; i < maxBombs; i++)
+        {
+            bombingSpaces[i] = GetSpace(Random.Range(0, columnRange), Random.Range(0, rowRange));
+            if (!bombingSpaces[i].GetComponent<GridSpace>().CheckIsTarget())
+            {
+                bombingSpaces[i].GetComponent<GridSpace>().SetTarget();
+            }
+            else
+            {
+                bombingSpaces[i] = null;
+                i--;
+            }
+        }
+    }
+
+    public void SelectSemiRandomSpace()
+    {
+
+    }
+
+    public void selectFullLockSpace()
+    {
+
+    }
 }
