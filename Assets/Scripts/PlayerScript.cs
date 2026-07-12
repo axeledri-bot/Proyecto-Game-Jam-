@@ -13,8 +13,10 @@ public class PlayerScript : MonoBehaviour
 
     [SerializeField] private float movVel, rotVel;
     private bool canIMove;
+
     [SerializeField] GameObject animatorGbj;
     private Animator animator;
+    private bool isDed;
 
     private void Start()
     {
@@ -24,11 +26,13 @@ public class PlayerScript : MonoBehaviour
 
         animator = animatorGbj.GetComponent<Animator>();
 
+        canIMove = true;
+
     }
 
     private void Update()
     {
-        if (!canIMove)
+        if (canIMove)
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
@@ -36,6 +40,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     //MoveToSpace(gridSystem.GetSpace(currentColumn, currentRow + 1));
                     StartCoroutine(RotatePlayer(Quaternion.Euler(0, 90, 0), gridSystem.GetSpace(currentColumn, currentRow + 1)));
+                    canIMove = false;
                 }
             }
             if (Input.GetKeyDown(KeyCode.S))
@@ -44,6 +49,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     //MoveToSpace(gridSystem.GetSpace(currentColumn, currentRow - 1));
                     StartCoroutine(RotatePlayer(Quaternion.Euler(0, 270, 0), gridSystem.GetSpace(currentColumn, currentRow - 1)));
+                    canIMove = false;
                 }
             }
             if (Input.GetKeyDown(KeyCode.D))
@@ -52,6 +58,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     //MoveToSpace(gridSystem.GetSpace(currentColumn + 1, currentRow));
                     StartCoroutine(RotatePlayer(Quaternion.Euler(0, 180, 0), gridSystem.GetSpace(currentColumn + 1, currentRow)));
+                    canIMove = false;
                 }
             }
             if (Input.GetKeyDown(KeyCode.A))
@@ -60,6 +67,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     //MoveToSpace(gridSystem.GetSpace(currentColumn - 1, currentRow));
                     StartCoroutine(RotatePlayer(Quaternion.Euler(0, 0, 0), gridSystem.GetSpace(currentColumn - 1, currentRow)));
+                    canIMove = false;
                 }
             }
         }
@@ -102,6 +110,8 @@ public class PlayerScript : MonoBehaviour
             currentGridSpace.GetComponent<GridSpace>().ChangePlayerStatus();
 
             animator.SetBool("IsRunning", false);
+
+            canIMove = true;
         }
     }
 
@@ -118,5 +128,11 @@ public class PlayerScript : MonoBehaviour
     public void GetPlayerCoordinates(out int x, out int y)
     {
         currentGridSpace.GetComponent<GridSpace>().GetCoordinates(out x, out y);
+    }
+
+    public void KrillPlayer()
+    {
+        isDed = true;
+        animator.SetBool("isDed", isDed);
     }
 }

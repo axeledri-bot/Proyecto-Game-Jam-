@@ -7,8 +7,19 @@ public class GridSpace : MonoBehaviour
     private int column, row;
     private string[] rowLetter = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
-    [SerializeField] private GameObject explosionSfx, targetMark, helicopter;
+    [SerializeField] private GameObject explosionSfx, targetMark, helicopterPrefab, heliGobj;
     [SerializeField] private GameObject[] obstacleArray;
+
+
+    private void Update()
+    {
+        if (isPlayerHere && isFinish)
+        {
+            heliGobj.SetActive(true);
+        }
+    }
+
+
 
     public void SetCoordinates(int x, int y)
     {
@@ -29,7 +40,9 @@ public class GridSpace : MonoBehaviour
     public void SetAsFinish()
     {
         isFinish = true;
-        Instantiate(helicopter, transform.position, transform.rotation).transform.SetParent(transform);
+        heliGobj = Instantiate(helicopterPrefab, transform.position, transform.rotation);
+        heliGobj.transform.SetParent(transform);
+        heliGobj.SetActive(false);
     }
     public bool CheckIsObstacle()
     {
@@ -41,7 +54,17 @@ public class GridSpace : MonoBehaviour
         if (isObstacle)
         {
             int i = Random.Range(0, obstacleArray.Length);
-            obstacleArray[i].SetActive(true);
+            if (i == 3)
+            {
+                obstacleArray[i].SetActive(true);
+                int[] prettyAngles = { 90, 180, 270, 360 };
+                obstacleArray[i].transform.Rotate(new Vector3(0, prettyAngles[Random.Range(0,prettyAngles.Length)],0));
+            }
+            else
+            {
+                obstacleArray[i].SetActive(true);
+                obstacleArray[i].transform.Rotate(new Vector3(0, Random.Range(0, 360), 0));
+            }
         }
     }
     public bool CheckIsTarget()
@@ -56,6 +79,13 @@ public class GridSpace : MonoBehaviour
     public void UnsetTarget()
     {
         isTargeted = false;
+    }
+    public void CheckForPlayer()
+    {
+        if (isPlayerHere)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().KrillPlayer();
+        }
     }
     public void LooseBombs()
     {

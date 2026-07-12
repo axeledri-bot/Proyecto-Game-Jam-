@@ -9,7 +9,7 @@ public class GridSystem : MonoBehaviour
     private GameObject startSpace, finishSpace;
 
     // GRID BOMBING VARIABLES
-    [SerializeField] private int maxBombs = 4, maxObstacles = 5;
+    [SerializeField] private int maxBombs = 4, maxObstacles = 7;
     private GameObject[] bombingSpaces;
     private PlayerScript playerScript;
 
@@ -32,7 +32,7 @@ public class GridSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SelectFullLockSpace();
+            SelectAllRandomSpace();
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
@@ -141,16 +141,28 @@ public class GridSystem : MonoBehaviour
 
     public void SelectAllRandomSpace()
     {
-        for (int i = 0; i < maxBombs - 1; i++)
+        int checkX, checkY;
+
+        for (int i = 0; i < maxBombs; i++)
         {
-            bombingSpaces[i] = GetSpace(Random.Range(0, columnRange), Random.Range(0, rowRange));
-            if (!bombingSpaces[i].GetComponent<GridSpace>().CheckIsTarget())
+            checkX = Random.Range(0, columnRange);
+            checkY = Random.Range(0, rowRange);
+
+            if (CheckSpace(checkX, checkY))
             {
-                bombingSpaces[i].GetComponent<GridSpace>().SetTarget();
+                bombingSpaces[i] = GetSpace(checkX, checkY);
+                if (!bombingSpaces[i].GetComponent<GridSpace>().CheckIsTarget())
+                {
+                    bombingSpaces[i].GetComponent<GridSpace>().SetTarget();
+                }
+                else
+                {
+                    bombingSpaces[i] = null;
+                    i--;
+                }
             }
             else
             {
-                bombingSpaces[i] = null;
                 i--;
             }
         }

@@ -8,6 +8,7 @@ public class ExplosionAnimation : MonoBehaviour
     {
         targetMark.SetActive(false);
         gridSpace.GetComponent<GridSpace>().UnsetTarget();
+        gridSpace.GetComponent<GridSpace>().CheckForPlayer();
     }
 
     public void DeactivateExplosion()
