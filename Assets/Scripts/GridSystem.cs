@@ -30,16 +30,24 @@ public class GridSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        //if (input.getkeydown(keycode.space))
+        //{
+        //    selectallrandomspace();
+        //}
+        //if (input.getkeydown(keycode.return))
+        //{
+        //    for (int i = 0; i < maxbombs; i++)
+        //    {
+        //        bombingspaces[i].getcomponent<gridspace>().loosebombs();
+        //    }
+        //}
+    }
+
+    public void DropBombs()
+    {
+        for (int i = 0; i < maxBombs; i++)
         {
-            SelectAllRandomSpace();
-        }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            for (int i = 0; i < maxBombs; i++)
-            {
-                bombingSpaces[i].GetComponent<GridSpace>().LooseBombs();
-            }
+            bombingSpaces[i].GetComponent<GridSpace>().LooseBombs();
         }
     }
 
@@ -227,5 +235,7 @@ public class GridSystem : MonoBehaviour
             }
         }
     }
+
+    
 
 }

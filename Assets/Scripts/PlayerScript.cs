@@ -26,7 +26,7 @@ public class PlayerScript : MonoBehaviour
 
         animator = animatorGbj.GetComponent<Animator>();
 
-        canIMove = true;
+        //canIMove = true;
 
     }
 
@@ -111,7 +111,8 @@ public class PlayerScript : MonoBehaviour
 
             animator.SetBool("IsRunning", false);
 
-            canIMove = true;
+            //canIMove = true;
+            StartCoroutine(GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().ManageBombs());
         }
     }
 
@@ -134,5 +135,15 @@ public class PlayerScript : MonoBehaviour
     {
         isDed = true;
         animator.SetBool("isDed", isDed);
+    }
+
+    public void GrantPlayerMove()
+    {
+        canIMove = true;
+    }
+
+    public bool CheckIsDed()
+    {
+        return isDed;
     }
 }

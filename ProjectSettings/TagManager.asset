@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - StartingNode
+  - GameManager
   layers:
   - Default
   - TransparentFX

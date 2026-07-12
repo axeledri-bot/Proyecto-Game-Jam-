@@ -12,7 +12,7 @@ public class HackerPenguin : MonoBehaviour
 
     private void Start()
     {
-        InitiatePenguin();
+        //InitiatePenguin();
     }
 
     private void Update()
@@ -78,6 +78,10 @@ public class HackerPenguin : MonoBehaviour
         if (transform.position == targetPos)
         {
             currentNode = node;
+            if (currentNode.isEnd)
+            {
+                GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().InformHackSuccesfulOrNot(true);
+            }
             readyToMove = true;
         }
     }

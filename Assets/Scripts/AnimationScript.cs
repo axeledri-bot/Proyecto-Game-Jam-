@@ -13,4 +13,10 @@ public class AnimationScript : MonoBehaviour
         GameObject.FindGameObjectWithTag("Player").SetActive(false);
         transform.parent.GetComponent<GridSpace>().ChangePlayerStatus();
     }
+
+    public void GamemanagerActivateMinigame()
+    {
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().ActivateMinigame();
+        TurnOff();
+    }
 }
