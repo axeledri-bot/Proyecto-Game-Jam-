@@ -3,26 +3,23 @@ using UnityEngine.SceneManagement;
 
 public class Pausa : MonoBehaviour
 {
-    private GameObject pauser;
+    [SerializeField] private GameObject pauser;
+    [SerializeField] private GameObject menu;
 
     public string escena;
 
-    private void Start()
-    {
-        pauser = transform.GetChild(1).gameObject;
-    }
     private void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Escape) )
         {
             pauser.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
 
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
             pauser.SetActive(false);
-      
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -32,8 +29,6 @@ public class Pausa : MonoBehaviour
     {
         pauser.SetActive(false);
         Time.timeScale = 1;
-
-
     }
     public void Reiniciar()
     { 
@@ -43,7 +38,7 @@ public class Pausa : MonoBehaviour
     public void Menu()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("Menu");
-
+        pauser.SetActive(false);
+        menu.SetActive(true);
     }
 }
