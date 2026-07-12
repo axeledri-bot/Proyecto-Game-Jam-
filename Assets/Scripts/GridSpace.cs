@@ -7,7 +7,7 @@ public class GridSpace : MonoBehaviour
     private int column, row;
     private string[] rowLetter = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
-    [SerializeField] private GameObject explosionSfx, targetMark;
+    [SerializeField] private GameObject explosionSfx, targetMark, helicopter;
     [SerializeField] private GameObject[] obstacleArray;
 
     public void SetCoordinates(int x, int y)
@@ -29,6 +29,7 @@ public class GridSpace : MonoBehaviour
     public void SetAsFinish()
     {
         isFinish = true;
+        Instantiate(helicopter, transform.position, transform.rotation).transform.SetParent(transform);
     }
     public bool CheckIsObstacle()
     {

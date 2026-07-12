@@ -13,12 +13,16 @@ public class PlayerScript : MonoBehaviour
 
     [SerializeField] private float movVel, rotVel;
     private bool canIMove;
+    [SerializeField] GameObject animatorGbj;
+    private Animator animator;
 
     private void Start()
     {
         gridSystem = gridSystemObj.GetComponent<GridSystem>();
 
         SnapToPlace(gridSystem.GetStartSpace());
+
+        animator = animatorGbj.GetComponent<Animator>();
 
     }
 
@@ -87,6 +91,7 @@ public class PlayerScript : MonoBehaviour
     {
         while (transform.position != targetPos)
         {
+            animator.SetBool("IsRunning", true);
             transform.position = Vector3.MoveTowards(transform.position, targetPos, movVel * Time.deltaTime);
             yield return null;
         }
@@ -95,6 +100,8 @@ public class PlayerScript : MonoBehaviour
             currentGridSpace = gridPos;
             currentGridSpace.GetComponent<GridSpace>().GetCoordinates(out currentColumn, out currentRow);
             currentGridSpace.GetComponent<GridSpace>().ChangePlayerStatus();
+
+            animator.SetBool("IsRunning", false);
         }
     }
 

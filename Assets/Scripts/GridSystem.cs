@@ -5,20 +5,20 @@ public class GridSystem : MonoBehaviour
     // GRID CREATION VARIABLES
     private int columnRange, rowRange;
     private GameObject[,] gridSpaceArray;
-    [SerializeField] private GameObject gridSpace;
+    [SerializeField] private GameObject gridSpace, bunker;
     private GameObject startSpace, finishSpace;
 
     // GRID BOMBING VARIABLES
-    [SerializeField] private int maxBombs = 4, maxObstacles = 2;
+    [SerializeField] private int maxBombs = 4, maxObstacles = 5;
     private GameObject[] bombingSpaces;
     private PlayerScript playerScript;
 
     private void Awake()
     {
-        columnRange = Random.Range(4, 8);
-        rowRange = Random.Range(4, 8);
+        columnRange = Random.Range(6, 8);
+        rowRange = Random.Range(6, 8);
         StartGrid();
-        //PlaceObstacles();
+        PlaceObstacles();
 
         bombingSpaces = new GameObject[maxBombs];
     }
@@ -41,6 +41,12 @@ public class GridSystem : MonoBehaviour
                 bombingSpaces[i].GetComponent<GridSpace>().LooseBombs();
             }
         }
+    }
+
+    public void GetGridRange(out int col, out int row)
+    {
+        col = columnRange;
+        row = rowRange;
     }
 
     public void StartGrid()
@@ -77,6 +83,10 @@ public class GridSystem : MonoBehaviour
 
             }
         }
+
+        int bunkerX, bunkerY;
+        startSpace.GetComponent<GridSpace>().GetCoordinates(out bunkerX, out bunkerY);
+        Instantiate(bunker, new Vector3(bunkerX - 1, 0, bunkerY + 1), Quaternion.Euler(0, 135, 0));
     }
 
     public void PlaceObstacles()
@@ -93,7 +103,7 @@ public class GridSystem : MonoBehaviour
                 randomY = Random.Range(0, rowRange);
                 if (randomX == startX && randomY == startY || randomX == startX + 1 && randomY == startY || randomX == startX && randomY == startY - 1 ||
                     randomX == finishX && randomY == finishY || randomX == finishX - 1 && randomY == finishY || randomX == finishX && randomY == finishY + 1 ||
-                    !GetSpace(randomX, randomY).GetComponent<GridSpace>().CheckIsObstacle())
+                    GetSpace(randomX, randomY).GetComponent<GridSpace>().CheckIsObstacle())
                 {
                 }
                 else

@@ -103,7 +103,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5f2b51847651fd546a577066888aba87, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridSpace
   explosionSfx: {fileID: 6889305275737747722}
   targetMark: {fileID: 8338263384037429066}
+  helicopter: {fileID: 1544123255597447609, guid: b9481001cc8797f4496a6e9452deb7b5, type: 3}
   obstacleArray:
   - {fileID: 8573534138330053932}
 --- !u!1001 &723148282418824695
@@ -340,11 +341,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9be6035206c0e7c42ad0aa41cdd9274d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.003
+      value: 0.0025
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9be6035206c0e7c42ad0aa41cdd9274d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.02
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9be6035206c0e7c42ad0aa41cdd9274d, type: 3}
       propertyPath: m_LocalScale.z
@@ -394,6 +395,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3035608602465568333, guid: 9be6035206c0e7c42ad0aa41cdd9274d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 647e271bcba65444dbd672eb3f748747, type: 2}
     - target: {fileID: 919132149155446097, guid: 9be6035206c0e7c42ad0aa41cdd9274d, type: 3}
       propertyPath: m_Name
       value: Carro
